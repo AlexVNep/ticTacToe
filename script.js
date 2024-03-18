@@ -20,8 +20,12 @@ function Gameboard (){
 
     // Select a cell to put token
     const dropToken = (row, column, player) => {
-        if(!board[row][column].getValue()) board[row][column].addToken(player)
-        console.log(board[row][column].addToken(player))
+        if(board[row][column].getValue() === 'O' || board[row][column].getValue() === 'X'){
+            console.log('This cell is used'); 
+            return 
+        } else {
+            board[row][column].addToken(player)
+        }
     };
 
     const printBoard = () => {
@@ -57,8 +61,8 @@ function Cell() {
   }
 
   function GameController(
-    playerOneName = "Alex",
-    playerTwoName = "Jess"
+    playerOneName = "PLAYER 1",
+    playerTwoName = "PLAYER 2"
   ) {
     const board = Gameboard();
   
@@ -76,7 +80,7 @@ function Cell() {
     let activePlayer = players[0];
   
     const switchPlayerTurn = () => {
-      activePlayer = activePlayer === players[0] ? players[1] : players[0];
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];     
     };
     const getActivePlayer = () => activePlayer;
   
@@ -94,6 +98,9 @@ function Cell() {
   
       /*  This is where we would check for a winner and handle that logic,
           such as a win message. */
+        // function checkWin () {
+        //     console.log('board');
+        // }
   
       // Switch player turn
       switchPlayerTurn();
@@ -107,7 +114,8 @@ function Cell() {
     // getActivePlayer for the UI version, so I'm revealing it now
     return {
       playRound,
-      getActivePlayer
+      getActivePlayer,
+    //   checkWin
     };
   }
   

@@ -104,18 +104,15 @@ function Cell() {
   
        /*This is where we would check for a winner and handle that logic,
           such as a win message. */
-          const boardWithCellValues = board.printBoard();
-
-          if(checkFunc(boardWithCellValues, activePlayer)){
-            console.log(`${activePlayer.name}(${activePlayer.token}) WON`);
-          }        
-
-      printNewRound();
+          checkFunc()
+          printNewRound();
     };
 
     const checkWin = (v1, v2, v3) => {
         if(v1 === getActivePlayer().token && v2 === getActivePlayer().token && v3 === getActivePlayer().token){
-            console.log('I got to here')
+            console.log('I got to here');
+            console.log(`${activePlayer.name}(${activePlayer.token}) WON`);
+            return true
         }
     }
 

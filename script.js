@@ -22,15 +22,17 @@ function Gameboard (){
     const dropToken = (row, column, player) => {
         if(board[row][column].getValue() === 'O' || board[row][column].getValue() === 'X'){
             console.log('This cell is used'); 
-            return 
+            return false
         } else {
             board[row][column].addToken(player)
+            return true
         }
     };
 
     const printBoard = () => {
-        const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
+        const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()));
         console.log(boardWithCellValues);
+        return boardWithCellValues;
       };
 
       return {getBoard, dropToken, printBoard};
@@ -94,18 +96,50 @@ function Cell() {
       console.log(
         `Dropping ${getActivePlayer().name}'s token into row ${row}, column ${column}...`
       );
-      board.dropToken(row, column, getActivePlayer().token);
+      let succeed = board.dropToken(row, column, getActivePlayer().token);
+      console.log(succeed)
+      if(succeed){
+        switchPlayerTurn();
+      } 
   
-      /*  This is where we would check for a winner and handle that logic,
+       /*This is where we would check for a winner and handle that logic,
           such as a win message. */
-        // function checkWin () {
-        //     console.log('board');
-        // }
-  
-      // Switch player turn
-      switchPlayerTurn();
+          const boardWithCellValues = board.printBoard();
+
+          if(checkFunc(boardWithCellValues, activePlayer)){
+            console.log(`${activePlayer.name}(${activePlayer.token}) WON`);
+          }        
+
       printNewRound();
     };
+
+    const checkWin = (v1, v2, v3) => {
+        if(v1 === getActivePlayer().token && v2 === getActivePlayer().token && v3 === getActivePlayer().token){
+            console.log('I got to here')
+        }
+    }
+
+    function checkFunc () {        
+        for(let i = 0; i < 3; i++){
+            //check rows
+            if(checkWin(board.getBoard()[i][0], board.getBoard()[i][1], board.getBoard()[i][2])){
+                console.log('I was checked')
+                return true;
+            }
+        }
+        for(let j = 0; j < 3; j++){
+            //check columns
+            if(checkWin(board.getBoard()[0][j], board.getBoard()[1][j], board.getBoard()[2][j])){
+                return true;
+            }
+        }
+        if(checkWin([board.getBoard()[0, 0], board.getBoard()[1, 1], board.getBoard()[2, 2] ])){
+            return true;
+        } else if(checkWin([board.getBoard()[2,0], board.getBoard()[1,1], board.getBoard()[0,2]])){
+            return true;
+        }
+        return false;
+    }
   
     // Initial play game message
     printNewRound();
@@ -115,9 +149,7 @@ function Cell() {
     return {
       playRound,
       getActivePlayer,
-    //   checkWin
     };
   }
   
   const game = GameController();
-  

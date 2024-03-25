@@ -87,57 +87,70 @@ function Cell() {
     const getActivePlayer = () => activePlayer;
   
     const printNewRound = () => {
-      board.printBoard();
-      console.log(`${getActivePlayer().name}'s turn.`);
+        board.printBoard();
+        console.log(`${getActivePlayer().name}'s turn.`);
     };
   
     const playRound = (row, column) => {
+
       // Drop a token for the current player
       console.log(
         `Dropping ${getActivePlayer().name}'s token into row ${row}, column ${column}...`
       );
       let succeed = board.dropToken(row, column, getActivePlayer().token);
+      let gameOver = checkFunc();
       console.log(succeed)
+      console.log(gameOver)      
       if(succeed){
-        switchPlayerTurn();
+        if(gameOver){
+            // console.log('REACHED')
+            return
+        } 
+    else {
+            checkFunc()
+            switchPlayerTurn();
+        }
       } 
   
        /*This is where we would check for a winner and handle that logic,
           such as a win message. */
-          checkFunc()
-          printNewRound();
+
+        function checkFunc () {     
+            for(let i = 0; i < 3; i++){
+                //check rows
+                if(checkWin(board.getBoard()[i][0], board.getBoard()[i][1], board.getBoard()[i][2])){
+                    return true;
+                }
+            }
+            for(let j = 0; j < 3; j++){
+                //check columns
+                if(checkWin(board.getBoard()[0][j], board.getBoard()[1][j], board.getBoard()[2][j])){
+                    return true;
+                }
+            }
+            if(checkWin(board.getBoard()[0][0], board.getBoard()[1][1], board.getBoard()[2][2])){
+                return true;
+            } else if(checkWin(board.getBoard()[2][0], board.getBoard()[1][1], board.getBoard()[0][2])){
+                return true;
+            }
+            return false;
+        }
+          
+            printNewRound();          
     };
 
     const checkWin = (v1, v2, v3) => {
-        if(v1 === getActivePlayer().token && v2 === getActivePlayer().token && v3 === getActivePlayer().token){
-            console.log('I got to here');
+        // console.log(v1.getValue())
+        if(v1.getValue() === getActivePlayer().token && v2.getValue() === getActivePlayer().token && v3.getValue() === getActivePlayer().token){
             console.log(`${activePlayer.name}(${activePlayer.token}) WON`);
-            return true
+            return  true;
         }
     }
 
-    function checkFunc () {        
-        for(let i = 0; i < 3; i++){
-            //check rows
-            if(checkWin(board.getBoard()[i][0], board.getBoard()[i][1], board.getBoard()[i][2])){
-                console.log('I was checked')
-                return true;
-            }
-        }
-        for(let j = 0; j < 3; j++){
-            //check columns
-            if(checkWin(board.getBoard()[0][j], board.getBoard()[1][j], board.getBoard()[2][j])){
-                return true;
-            }
-        }
-        if(checkWin([board.getBoard()[0, 0], board.getBoard()[1, 1], board.getBoard()[2, 2] ])){
-            return true;
-        } else if(checkWin([board.getBoard()[2,0], board.getBoard()[1,1], board.getBoard()[0,2]])){
-            return true;
-        }
-        return false;
-    }
-  
+    // const boardReset = function() {
+        
+    // }
+
     // Initial play game message
     printNewRound();
   
@@ -150,3 +163,24 @@ function Cell() {
   }
   
   const game = GameController();
+  
+  /*
+  ROWS
+  game.playRound(0,2);game.playRound(1,2);game.playRound(0,1);game.playRound(1,1);game.playRound(0,0)
+
+  game.playRound(1,2);game.playRound(0,2);game.playRound(1,1);game.playRound(0,1);game.playRound(1,0)
+
+  game.playRound(2,2);game.playRound(1,2);game.playRound(2,1);game.playRound(1,1);game.playRound(2,0)
+  
+  COLUMNS
+  game.playRound(0,0);game.playRound(1,2);game.playRound(1,0);game.playRound(1,1);game.playRound(2,0)
+
+  game.playRound(0,1);game.playRound(1,2);game.playRound(1,1);game.playRound(2,2);game.playRound(2,1)
+
+  game.playRound(0,2);game.playRound(1,1);game.playRound(1,2);game.playRound(2,1);game.playRound(2,2)
+
+  DIAGONALS
+  game.playRound(0,2);game.playRound(1,2);game.playRound(1,1);game.playRound(2,1);game.playRound(2,0)
+
+  game.playRound(0,0);game.playRound(1,2);game.playRound(1,1);game.playRound(2,0);game.playRound(2,2)
+  */

@@ -3,7 +3,7 @@
 function Gameboard (){
     const rows = 3;
     const columns = 3;
-    const board = [];
+    let board = [];
     
     // for loop creates a 2d array based on rows and columns
     // row 0 is top row
@@ -35,7 +35,17 @@ function Gameboard (){
         return boardWithCellValues;
       };
 
-      return {getBoard, dropToken, printBoard};
+      const boardReset = function() {
+        board = [];
+        for (let i = 0; i < rows; i++) {
+          board[i] = [];
+          for (let j = 0; j < columns; j++) {
+              board[i].push(Cell());
+            }
+          }
+        }
+        
+        return {getBoard, dropToken, printBoard, boardReset};
 }
 
 /*
@@ -104,7 +114,8 @@ function Cell() {
       if(succeed){
         if(gameOver){
             // console.log('REACHED')
-            return
+            board.printBoard()
+            board.boardReset()
         } 
     else {
             checkFunc()
@@ -146,10 +157,6 @@ function Cell() {
             return  true;
         }
     }
-
-    // const boardReset = function() {
-        
-    // }
 
     // Initial play game message
     printNewRound();

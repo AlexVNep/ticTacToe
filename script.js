@@ -56,7 +56,7 @@ function Gameboard (){
 */
 
 function Cell() {
-    let value = '+';
+    let value = ' ';
   
     // Accept a player's token to change the value of the cell
     const addToken = (player) => {
@@ -109,19 +109,25 @@ function Cell() {
       );
       let succeed = board.dropToken(row, column, getActivePlayer().token);
       let gameOver = checkFunc();
-      console.log(succeed)
-      console.log(gameOver)      
+      let tie = tieFunc();
+      console.log(succeed);
+      console.log(gameOver);   
+      console.log(tie);   
       if(succeed){
         if(gameOver){
             // console.log('REACHED')
-            board.printBoard()
-            board.boardReset()
-        } 
-    else {
-            checkFunc()
-            switchPlayerTurn();
+            board.printBoard();
+            board.boardReset();
+        } else if(tie){
+          board.printBoard();
+          board.boardReset();
         }
-      } 
+    else {
+      checkFunc();
+      tieFunc()
+      switchPlayerTurn();
+    }
+  } 
   
        /*This is where we would check for a winner and handle that logic,
           such as a win message. */
@@ -144,8 +150,21 @@ function Cell() {
             } else if(checkWin(board.getBoard()[2][0], board.getBoard()[1][1], board.getBoard()[0][2])){
                 return true;
             }
+            console.log('Checking for win')
             return false;
         }
+
+        function tieFunc() {
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            if (checkTie(board.getBoard()[i][j]), checkTie(board.getBoard()[i][j]), checkTie(board.getBoard()[i][j]), checkTie(board.getBoard()[i][j]), checkTie(board.getBoard()[i][j]), checkTie(board.getBoard()[i][j]), checkTie(board.getBoard()[i][j]), checkTie(board.getBoard()[i][j]), checkTie(board.getBoard()[i][j])) {
+              return true;
+            }
+          }
+        }
+        console.log('Checking for draw')
+        return false
+      }
           
             printNewRound();          
     };
@@ -157,6 +176,14 @@ function Cell() {
             return  true;
         }
     }
+    
+    const checkTie = (v1, v2, v3, v4, v5, v6, v7, v8, v9) => {
+      // console.log(v1.getValue())
+      if((v1.getValue() === players.token) && (v2.getValue() === players.token) && (v3.getValue() === players.token) && (v4.getValue() === players.token) && (v5.getValue() === players.token) && (v6.getValue() === players.token) && (v7.getValue() === players.token) && (v8.getValue() === players.token) && (v9.getValue() === players.token)) {
+        console.log('It is a draw. Try again');
+        return true
+      }
+    }    
 
     // Initial play game message
     printNewRound();
@@ -190,4 +217,7 @@ function Cell() {
   game.playRound(0,2);game.playRound(1,2);game.playRound(1,1);game.playRound(2,1);game.playRound(2,0)
 
   game.playRound(0,0);game.playRound(1,2);game.playRound(1,1);game.playRound(2,0);game.playRound(2,2)
+
+  DRAW
+  game.playRound(0,0);game.playRound(0,1);game.playRound(0,2);game.playRound(2,0);game.playRound(2,1); game.playRound(2,2);game.playRound(1,0);game.playRound(1,1);game.playRound(1,2)
   */

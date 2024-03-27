@@ -43,8 +43,7 @@ function Gameboard (){
               board[i].push(Cell());
             }
           }
-        }
-        
+        }        
         return {getBoard, dropToken, printBoard, boardReset};
 }
 
@@ -119,60 +118,56 @@ function Cell() {
       switchPlayerTurn();
     }
   } 
-  
-       /*This is where we would check for a winner and handle that logic,
-          such as a win message. */
-
-        function checkFunc () {
-          const rawBoard = board.getBoard().map(row => row.map(cell => cell.getValue()));     
-            for(let i = 0; i < 3; i++){
-                //check rows
-                if(checkWin(board.getBoard()[i][0], board.getBoard()[i][1], board.getBoard()[i][2])){
-                    return true;
-                }
-            }
-            for(let j = 0; j < 3; j++){
-                //check columns
-                if(checkWin(board.getBoard()[0][j], board.getBoard()[1][j], board.getBoard()[2][j])){
-                    return true;
-                }
-            }
-            //check diagonals
-            if(checkWin(board.getBoard()[0][0], board.getBoard()[1][1], board.getBoard()[2][2])){
-                return true;
-            } else if(checkWin(board.getBoard()[2][0], board.getBoard()[1][1], board.getBoard()[0][2])){
-                return true;
-                // if no win, check for tie 
-            } else if(rawBoard.every((row) => (row.every((cell) => cell !== '+')))){
-              console.log('It is a tie')
-              return true;
-            }            
-            return false;
-        }
-          
-            printNewRound();          
-    };
-
-    const checkWin = (v1, v2, v3) => {
-        // console.log(v1.getValue())
-        if(v1.getValue() === getActivePlayer().token && v2.getValue() === getActivePlayer().token && v3.getValue() === getActivePlayer().token){
-            console.log(`${activePlayer.name}(${activePlayer.token}) WON`);
-            return  true;
-        }
+  /*This is where we would check for a winner and handle that logic, such as a win message. */
+  function checkFunc () {
+    const rawBoard = board.getBoard().map(row => row.map(cell => cell.getValue()));
+    for(let i = 0; i < 3; i++){
+      //check rows
+      if(checkWin(board.getBoard()[i][0], board.getBoard()[i][1], board.getBoard()[i][2])){
+        return true;
+      }
     }
-
-    // Initial play game message
-    printNewRound();
-  
-    // For the console version, we will only use playRound, but we will need
-    // getActivePlayer for the UI version, so I'm revealing it now
-    return {
-      playRound,
-      getActivePlayer,
-    };
+    for(let j = 0; j < 3; j++){
+      //check columns
+      if(checkWin(board.getBoard()[0][j], board.getBoard()[1][j], board.getBoard()[2][j])){
+        return true;
+      }
+    }
+    //check diagonals
+    if(checkWin(board.getBoard()[0][0], board.getBoard()[1][1], board.getBoard()[2][2])){
+      return true;
+    } else if(checkWin(board.getBoard()[2][0], board.getBoard()[1][1], board.getBoard()[0][2])){
+      return true;
+      // if no win, check for tie 
+    }else if(rawBoard.every((row) => (row.every((cell) => cell !== '+')))){
+      console.log('It is a tie')
+      return true;
+    }
+    return false;
   }
-  
-  const game = GameController();
+  printNewRound();
+};
+
+const checkWin = (v1, v2, v3) => {
+  // console.log(v1.getValue())
+  if(v1.getValue() === getActivePlayer().token && v2.getValue() === getActivePlayer().token && v3.getValue() === getActivePlayer().token){
+    console.log(`${activePlayer.name}(${activePlayer.token}) WON`);
+    return  true;
+  }
+}
+
+// Initial play game message
+printNewRound();
+
+// For the console version, we will only use playRound, but we will need
+// getActivePlayer for the UI version, so I'm revealing it now
+  return {
+    playRound,
+    getActivePlayer,
+  };
+}
+
+const game = GameController();
   
   /*
   ROWS

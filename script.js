@@ -182,26 +182,25 @@ function ScreenController(){
 
     //render board squares
     board.forEach(row => {
-      row.forEach((cell, index) => {
+      row.forEach((cell) => {
         const cellButton = document.createElement('button');
         cellButton.classList.add('cell');
-        cellButton.dataset.row = index
+        cellButton.dataset.row = cell;
         cellButton.textContent = cell.getValue();
         boardDiv.appendChild(cellButton);
       })
-    });
-    // console.log(typeof(index))
+    });  
   }
   updateScreen()
 }
 
 // Add event listener for the board
 function clickHandlerBoard(e) {
-  const selectedColumn = e.target.dataset.column;
+  const selectedCell = e.target.dataset.row;
   // Make sure I've clicked a column and not the gaps in between
-  if (!selectedColumn) return;
+  if (!selectedCell) return;
   
-  game.playRound(selectedColumn);
+  game.playRound(selectedCell);
   updateScreen();
 
 boardDiv.addEventListener("click", clickHandlerBoard);

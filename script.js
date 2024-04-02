@@ -181,12 +181,13 @@ function ScreenController(){
     playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
 
     //render board squares
-    board.forEach(row => {
-      row.forEach((cell, rIndex, index) => {
+    board.forEach((row, rowIndex) => {
+      row.forEach((cell, cellIndex) => {
         const cellButton = document.createElement('button');
         cellButton.classList.add('cell');
-        cellButton.dataset.row = rIndex;
-        cellButton.dataset.column= index;
+        cellButton.setAttribute('data', (rowIndex, cellIndex))
+        cellButton.dataset.row = rowIndex;
+        cellButton.dataset.column= cellIndex;
         cellButton.textContent = cell.getValue();
         boardDiv.appendChild(cellButton);
       })
@@ -198,7 +199,7 @@ function clickHandlerBoard(e) {
   const selectedRow = e.target.dataset.row;
   const selectedCol = e.target.dataset.column;
   // Make sure I've clicked a column and not the gaps in between
-  // if (!selectedCell) return;
+  if (!selectedRow && !selectedCol) return;
   
   game.playRound(selectedRow, selectedCol);
   updateScreen();

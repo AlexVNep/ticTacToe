@@ -189,10 +189,8 @@ function ScreenController(){
         cellButton.textContent = cell.getValue();
         boardDiv.appendChild(cellButton);
       })
-    });  
+    })  
   }
-  updateScreen()
-}
 
 // Add event listener for the board
 function clickHandlerBoard(e) {
@@ -202,7 +200,7 @@ function clickHandlerBoard(e) {
   
   game.playRound(selectedCell);
   updateScreen();
-
+}
 boardDiv.addEventListener("click", clickHandlerBoard);
 
 // Initial render

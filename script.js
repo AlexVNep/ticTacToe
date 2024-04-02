@@ -182,10 +182,11 @@ function ScreenController(){
 
     //render board squares
     board.forEach(row => {
-      row.forEach((cell) => {
+      row.forEach((cell, rIndex, index) => {
         const cellButton = document.createElement('button');
         cellButton.classList.add('cell');
-        cellButton.dataset.row = cell;
+        cellButton.dataset.row = rIndex;
+        cellButton.dataset.column= index;
         cellButton.textContent = cell.getValue();
         boardDiv.appendChild(cellButton);
       })
@@ -194,11 +195,12 @@ function ScreenController(){
 
 // Add event listener for the board
 function clickHandlerBoard(e) {
-  const selectedCell = e.target.dataset.row;
+  const selectedRow = e.target.dataset.row;
+  const selectedCol = e.target.dataset.column;
   // Make sure I've clicked a column and not the gaps in between
-  if (!selectedCell) return;
+  // if (!selectedCell) return;
   
-  game.playRound(selectedCell);
+  game.playRound(selectedRow, selectedCol);
   updateScreen();
 }
 boardDiv.addEventListener("click", clickHandlerBoard);

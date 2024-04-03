@@ -172,6 +172,7 @@ function ScreenController(){
   const game = GameController();
   const playerTurnDiv = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
+  const restartButton = document.querySelector('.restart')
 
   const updateScreen = () => {
     boardDiv.textContent = ' '; //clears board
@@ -200,7 +201,7 @@ function clickHandlerBoard(e) {
   const selectedCol = e.target.dataset.column;
   // Make sure I've clicked a column and not the gaps in between
   if (!selectedRow && !selectedCol) return;
-  
+
   game.playRound(selectedRow, selectedCol);
   updateScreen();
 }

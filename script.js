@@ -164,7 +164,9 @@ printNewRound();
   return {
     playRound,
     getActivePlayer,
-    getBoard: board.getBoard
+    getBoard: board.getBoard,
+    boardReset:board.boardReset,
+    gameOver:playRound.gameOver
   };
 }
 
@@ -203,9 +205,16 @@ function clickHandlerBoard(e) {
   if (!selectedRow && !selectedCol) return;
 
   game.playRound(selectedRow, selectedCol);
+  console.log(game.gameOver)
   updateScreen();
 }
 boardDiv.addEventListener("click", clickHandlerBoard);
+
+function resetHandler(){
+  game.boardReset();
+  updateScreen();
+}
+restartButton.addEventListener('click', resetHandler);
 
 // Initial render
 updateScreen();

@@ -112,10 +112,11 @@ function Cell() {
       console.log(gameOver);
       if(succeed){
         if(gameOver){
-            return;
+            return 'game over';
         } else {
       checkFunc();
       switchPlayerTurn();
+      return 'Success'
     }
   } 
   /*This is where we would check for a winner and handle that logic, such as a win message. */
@@ -165,8 +166,7 @@ printNewRound();
     playRound,
     getActivePlayer,
     getBoard: board.getBoard,
-    boardReset:board.boardReset,
-    gameOver:playRound.gameOver
+    boardReset:board.boardReset
   };
 }
 
@@ -202,11 +202,15 @@ function clickHandlerBoard(e) {
   const selectedRow = e.target.dataset.row;
   const selectedCol = e.target.dataset.column;
   // Make sure I've clicked a column and not the gaps in between
-  if (!selectedRow && !selectedCol) return;
-
-  game.playRound(selectedRow, selectedCol);
-  console.log(game.gameOver)
+  if (!selectedRow && !selectedCol) {
+    return;
+  } else if(game.playRound(selectedRow, selectedCol) === 'gameOver'){
+    playerTurnDiv.textContent = `${activePlayer.name} WINS`
+    updateScreen()
+  } else{
+    game.playRound(selectedRow, selectedCol);
   updateScreen();
+  }
 }
 boardDiv.addEventListener("click", clickHandlerBoard);
 

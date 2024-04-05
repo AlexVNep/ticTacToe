@@ -108,8 +108,8 @@ function Cell() {
       );
       let succeed = board.dropToken(row, column, getActivePlayer().token);
       let gameOver = checkFunc();
-      console.log(succeed);
-      console.log(gameOver);
+      // console.log(succeed);
+      // console.log(gameOver);
       if(succeed){
         if(gameOver === 'winner'){
             return 'game over';
@@ -243,19 +243,16 @@ function resetHandler(){
 }
 restartButton.addEventListener('click', resetHandler);
 
-function winMessage(){
-  
+function winMessage(){  
   if(winner === 'game over'){
     console.log('Winner')
     winMsg.textContent = `${game.getActivePlayer().name} WINS`;
     restartButton.parentNode.insertBefore(winMsg, restartButton.nextSibling);
-    // boardDiv.appendChild(winMsg);
   } else if(winner === 'tie'){
     console.log('TIE');
     winMsg.textContent = 'It is a tie';
   }
 }
-
 // Initial render
 updateScreen();
 

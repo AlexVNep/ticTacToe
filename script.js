@@ -177,7 +177,8 @@ function ScreenController(){
   const playerTurnDiv = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
   const restartButton = document.querySelector('.restart')
-  const winMsg = document.querySelector('.win')
+  const winMsg = document.querySelector('.result')
+  let winner;
 
   const updateScreen = () => {
     boardDiv.textContent = ' '; //clears board
@@ -203,13 +204,12 @@ function ScreenController(){
 // Add event listener for the board
 function clickHandlerBoard(e) {
   const selectedRow = e.target.dataset.row;
-  const selectedCol = e.target.dataset.column;
-  const winner = game.playRound(selectedRow, selectedCol);
-  console.log(winner)
+  const selectedCol = e.target.dataset.column;  
   
   // Make sure I've clicked a column and not the gaps in between
   if (!selectedRow && !selectedCol) return;
-  game.playRound(selectedRow, selectedCol);
+  winner = game.playRound(selectedRow, selectedCol);
+  console.log(winner)
   updateScreen();
 }
 boardDiv.addEventListener("click", clickHandlerBoard);
@@ -227,15 +227,13 @@ function resetHandler(){
 }
 restartButton.addEventListener('click', resetHandler);
 
-// function winMessage(){
-//   let winner = game.playRound(selectedRow, selectedCol);
-//   if(winner === 'gameOver'){
-//     const p = document.createElement('p');
-//   p.textContent = 'Testing';
-//   winMsg.appendChild(p);
-//   }  
-// }
-// winMessage()
+function winMessage(){
+  if(winner === 'gameOver'){
+    console.log('TESTING')
+    winMsg.textContent = 'Testing';
+  }
+}
+winMessage()
 // Initial render
 updateScreen();
 

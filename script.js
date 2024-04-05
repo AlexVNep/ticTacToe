@@ -166,7 +166,9 @@ printNewRound();
     playRound,
     getActivePlayer,
     getBoard: board.getBoard,
-    boardReset:board.boardReset
+    boardReset:board.boardReset,
+    printNewRound,
+    switchPlayerTurn
   };
 }
 
@@ -175,6 +177,7 @@ function ScreenController(){
   const playerTurnDiv = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
   const restartButton = document.querySelector('.restart')
+  const winMsg = document.querySelector('.win')
 
   const updateScreen = () => {
     boardDiv.textContent = ' '; //clears board
@@ -201,25 +204,38 @@ function ScreenController(){
 function clickHandlerBoard(e) {
   const selectedRow = e.target.dataset.row;
   const selectedCol = e.target.dataset.column;
+  const winner = game.playRound(selectedRow, selectedCol);
+  console.log(winner)
+  
   // Make sure I've clicked a column and not the gaps in between
-  if (!selectedRow && !selectedCol) {
-    return;
-  } else if(game.playRound(selectedRow, selectedCol) === 'gameOver'){
-    playerTurnDiv.textContent = `${activePlayer.name} WINS`
-    updateScreen()
-  } else{
-    game.playRound(selectedRow, selectedCol);
+  if (!selectedRow && !selectedCol) return;
+  game.playRound(selectedRow, selectedCol);
   updateScreen();
-  }
 }
 boardDiv.addEventListener("click", clickHandlerBoard);
 
 function resetHandler(){
   game.boardReset();
-  updateScreen();
+  if(game.getActivePlayer().token === 'X'){
+    game.switchPlayerTurn()
+    game.printNewRound();
+    updateScreen();
+  } else {
+    game.printNewRound;
+    updateScreen();
+  }
 }
 restartButton.addEventListener('click', resetHandler);
 
+// function winMessage(){
+//   let winner = game.playRound(selectedRow, selectedCol);
+//   if(winner === 'gameOver'){
+//     const p = document.createElement('p');
+//   p.textContent = 'Testing';
+//   winMsg.appendChild(p);
+//   }  
+// }
+// winMessage()
 // Initial render
 updateScreen();
 

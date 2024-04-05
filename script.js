@@ -111,9 +111,11 @@ function Cell() {
       console.log(succeed);
       console.log(gameOver);
       if(succeed){
-        if(gameOver){
+        if(gameOver === 'winner'){
             return 'game over';
-        } else {
+        } else if (gameOver === 'tie') {
+          return 'tie'
+        }else {
       checkFunc();
       switchPlayerTurn();
       return 'Success'
@@ -121,31 +123,34 @@ function Cell() {
   } 
   /*This is where we would check for a winner and handle that logic, such as a win message. */
   function checkFunc () {
-    const rawBoard = board.getBoard().map(row => row.map(cell => cell.getValue()));
+    
     for(let i = 0; i < 3; i++){
       //check rows
       if(checkWin(board.getBoard()[i][0], board.getBoard()[i][1], board.getBoard()[i][2])){
-        return true;
+        return 'winner';
       }
     }
     for(let j = 0; j < 3; j++){
       //check columns
       if(checkWin(board.getBoard()[0][j], board.getBoard()[1][j], board.getBoard()[2][j])){
-        return true;
+        return 'winner';
       }
     }
     //check diagonals
     if(checkWin(board.getBoard()[0][0], board.getBoard()[1][1], board.getBoard()[2][2])){
-      return true;
+      return 'winner';
     } else if(checkWin(board.getBoard()[2][0], board.getBoard()[1][1], board.getBoard()[0][2])){
-      return true;
-      // if no win, check for tie 
-    }else if(rawBoard.every((row) => (row.every((cell) => cell !== '+')))){
-      console.log('It is a tie')
-      return true;
+      return 'winner'; 
+    } 
+    // if no win, check for tie
+    else {
+      if(checkTie()){
+        return 'tie';
+      };
     }
     return false;
   }
+  
   printNewRound();
 };
 
@@ -154,6 +159,14 @@ const checkWin = (v1, v2, v3) => {
   if(v1.getValue() === getActivePlayer().token && v2.getValue() === getActivePlayer().token && v3.getValue() === getActivePlayer().token){
     console.log(`${activePlayer.name}(${activePlayer.token}) WON`);
     return  true;
+  }
+}
+
+function checkTie() {
+  const rawBoard = board.getBoard().map(row => row.map(cell => cell.getValue()));
+  if(rawBoard.every((row) => (row.every((cell) => cell !== '+')))){
+    console.log('It is a tie')
+    return true;
   }
 }
 
@@ -177,7 +190,7 @@ function ScreenController(){
   const playerTurnDiv = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
   const restartButton = document.querySelector('.restart')
-  const winMsg = document.querySelector('.result')
+  const winMsg = document.createElement('div')
   let winner;
 
   const updateScreen = () => {
@@ -210,6 +223,8 @@ function clickHandlerBoard(e) {
   if (!selectedRow && !selectedCol) return;
   winner = game.playRound(selectedRow, selectedCol);
   console.log(winner)
+  winMessage()
+
   updateScreen();
 }
 boardDiv.addEventListener("click", clickHandlerBoard);
@@ -222,18 +237,25 @@ function resetHandler(){
     updateScreen();
   } else {
     game.printNewRound;
+    winMsg.textContent = ' ',
     updateScreen();
   }
 }
 restartButton.addEventListener('click', resetHandler);
 
 function winMessage(){
-  if(winner === 'gameOver'){
-    console.log('TESTING')
-    winMsg.textContent = 'Testing';
+  
+  if(winner === 'game over'){
+    console.log('Winner')
+    winMsg.textContent = `${game.getActivePlayer().name} WINS`;
+    restartButton.parentNode.insertBefore(winMsg, restartButton.nextSibling);
+    // boardDiv.appendChild(winMsg);
+  } else if(winner === 'tie'){
+    console.log('TIE');
+    winMsg.textContent = 'It is a tie';
   }
 }
-winMessage()
+
 // Initial render
 updateScreen();
 

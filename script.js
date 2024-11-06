@@ -246,6 +246,7 @@ restartButton.addEventListener('click', resetHandler);
 function winMessage(){  
   if(winner === 'game over'){
     console.log('Winner')
+    winMsg.classList.add('result');
     winMsg.textContent = `${game.getActivePlayer().name} WINS`;
     restartButton.parentNode.insertBefore(winMsg, restartButton.nextSibling);
   } else if(winner === 'tie'){
